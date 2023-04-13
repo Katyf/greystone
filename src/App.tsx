@@ -1,39 +1,68 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import axios from "axios";
 import {CreateUserForm} from "./Components/CreateUserForm";
+import {CircularProgress, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {LoanTable} from "./Components/LoanTable";
+import axios, {AxiosResponse} from "axios";
+
+
+interface User {
+  id: number
+  username: string
+}
 
 function App() {
+  const [currentUserId, setCurrentUserId] = useState<number | undefined>();
+  const [response, setResponse] = useState<AxiosResponse>();
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>();
+  const [refreshData, setRefreshData] = useState(true);
+
+  const makeRequest = async () => {
+    try {
+      const result = await axios.get('https://lending-api.azurewebsites.net/users');
+      setResponse(result);
+    } catch(error: any) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    const url = `https://cors-anywhere.herokuapp.com/https://lending-api.azurewebsites.net/users`;
-    axios.get(url, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'Content-Type': 'application/json',
-      }
-    })
-        .then((response) => {
-          setData(response.data);
-          setLoading(false);
-        })
-        .catch((e) => console.log(e))
-  }, [])
+    if (refreshData) {
+      makeRequest().then()
+      setRefreshData(false)
+    }
+  }, [refreshData]);
+
+  const handleUserChange = (e: any, el: any) => {
+    setCurrentUserId(el.props.value)
+  }
+
+  if (loading) return <CircularProgress />
+  if (error) return <div>error :/</div>
 
   return (
       <div className="App">
-        {data && data.map((user: any) => (
-            <div>{user.username}</div>
-        ))}
+        <FormControl fullWidth>
+          <InputLabel id="user-select-label">User</InputLabel>
+          <Select
+              labelId="user-select-label"
+              id="user-select"
+              value={currentUserId}
+              label="User"
+              onChange={(e: any, a: any) => handleUserChange(e, a)}
+          >
+            {response?.data?.map((user: any) => (
+                <MenuItem key={user.id} value={user.id}>{user.username}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-        <CreateUserForm />
-        <LoanTable userId={1} />
+
+        <CreateUserForm setRefreshData={setRefreshData}/>
+        <LoanTable userId={currentUserId} />
       </div>
   );
 }
