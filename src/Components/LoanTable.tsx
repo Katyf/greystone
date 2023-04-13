@@ -1,12 +1,25 @@
-import {CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {
+    Box,
+    CircularProgress, IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow, Tooltip,
+    Typography,
+} from "@mui/material";
+import ShareIcon from '@mui/icons-material/Share';
 import {useEffect, useState} from "react";
 import axios, {AxiosResponse} from "axios";
+import {ShareLoanDialog} from "./ShareLoanDialog";
 
 interface LoanTableProps {
-    userId?: number
+    userId?: string
 }
 
-interface Loan {
+export interface Loan {
     amount: number
     apr: number
     term: number
@@ -22,6 +35,7 @@ export const LoanTable = (props: LoanTableProps) => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [refreshData, setRefreshData] = useState(true);
+    const [currentLoan, setCurrentLoan] = useState<Loan>();
 
     const makeRequest = async () => {
         try {
@@ -33,6 +47,10 @@ export const LoanTable = (props: LoanTableProps) => {
             setLoading(false);
         }
     };
+
+    const handleShare = (loan: Loan) => {
+        setCurrentLoan(loan)
+    }
 
     useEffect(() => {
         if (refreshData && userId) {
@@ -48,36 +66,53 @@ export const LoanTable = (props: LoanTableProps) => {
     if (error) return <div>There was an error :/ </div>
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="loans table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right">Id</TableCell>
-                        <TableCell align="right">Amount</TableCell>
-                        <TableCell align="right">APR</TableCell>
-                        <TableCell align="right">Term</TableCell>
-                        <TableCell align="right">Status</TableCell>
-                        <TableCell align="right">Owner</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {response?.data?.map((row: Loan) => (
-                        <TableRow
-                            key={row.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.id}
-                            </TableCell>
-                            <TableCell align="right">{row.amount}</TableCell>
-                            <TableCell align="right">{row.apr}</TableCell>
-                            <TableCell align="right">{row.term}</TableCell>
-                            <TableCell align="right">{row.status}</TableCell>
-                            <TableCell align="right">{row.owner_id}</TableCell>
+        <>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="loans table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="center">Id</TableCell>
+                            <TableCell align="center">Amount</TableCell>
+                            <TableCell align="center">APR</TableCell>
+                            <TableCell align="center">Term</TableCell>
+                            <TableCell align="center">Status</TableCell>
+                            <TableCell align="center">Owner</TableCell>
+                            <TableCell align="center">{' '}</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {response?.data?.length > 0 && response?.data.map((row: Loan) => (
+                            <TableRow
+                                key={row.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell align="center">{row.id}</TableCell>
+                                <TableCell align="center">{row.amount}</TableCell>
+                                <TableCell align="center">{row.apr}</TableCell>
+                                <TableCell align="center">{row.term}</TableCell>
+                                <TableCell align="center">{row.status}</TableCell>
+                                <TableCell align="center">{row.owner_id}</TableCell>
+                                <TableCell align="right" sx={{width: '30px'}}>
+                                    <Tooltip title="Share">
+                                        <IconButton aria-label="share" onClick={() => handleShare(row)}>
+                                            <ShareIcon fontSize="small"/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            {response?.data?.length === 0 && (
+                <Box sx={{padding: '24px', textAlign: 'center'}}>
+                    <Typography>This user doesn't have any loans yet</Typography>
+                </Box>
+            )}
+            {currentLoan && (
+                <ShareLoanDialog users={[]} currentUserId={userId} currentLoan={currentLoan} handleClose={() => setCurrentLoan(undefined)} />
+            )}
+
+        </>
     );
 };

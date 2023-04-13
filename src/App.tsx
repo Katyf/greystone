@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import {CreateUserForm} from "./Components/CreateUserForm";
-import {CircularProgress, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {CircularProgress, Container, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {LoanTable} from "./Components/LoanTable";
 import axios, {AxiosResponse} from "axios";
 
@@ -12,7 +12,7 @@ interface User {
 }
 
 function App() {
-  const [currentUserId, setCurrentUserId] = useState<number | undefined>();
+  const [currentUserId, setCurrentUserId] = useState('');
   const [response, setResponse] = useState<AxiosResponse>();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -44,7 +44,7 @@ function App() {
   if (error) return <div>error :/</div>
 
   return (
-      <div className="App">
+      <Container className="container" maxWidth="xl" sx={{padding: '24px'}}>
         <FormControl fullWidth>
           <InputLabel id="user-select-label">User</InputLabel>
           <Select
@@ -52,10 +52,10 @@ function App() {
               id="user-select"
               value={currentUserId}
               label="User"
-              onChange={(e: any, a: any) => handleUserChange(e, a)}
+              onChange={(e: any, el: any) => handleUserChange(e, el)}
           >
             {response?.data?.map((user: any) => (
-                <MenuItem key={user.id} value={user.id}>{user.username}</MenuItem>
+                <MenuItem key={user.id} value={String(user.id)}>{user.username}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -63,7 +63,7 @@ function App() {
 
         <CreateUserForm setRefreshData={setRefreshData}/>
         <LoanTable userId={currentUserId} />
-      </div>
+      </Container>
   );
 }
 
