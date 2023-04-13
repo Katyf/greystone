@@ -1,9 +1,23 @@
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {useEffect, useState} from "react";
+import {
+    CircularProgress,
+    Dialog,
+    DialogContent, DialogContentText,
+    DialogTitle,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow
+} from "@mui/material";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
+import {UserContext} from "../Contexts/UserContext";
 
-interface LoanScheduleTableProps {
+interface AmortizationTableProps {
     loanId: number
+    handleClose: () => void
 }
 
 interface LoanSchedule {
@@ -14,58 +28,76 @@ interface LoanSchedule {
     close_balance: number
 }
 
-export const LoanScheduleTable = (props: LoanScheduleTableProps) => {
-    const {loanId} = props;
+export const AmortizationTable = (props: AmortizationTableProps) => {
+    const {loanId, handleClose} = props;
+    const {currentUser} = useContext(UserContext)
+    const [error, setError] = useState(true)
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<LoanSchedule[]>([])
 
+    const getSchedule = async () => {
+        if (currentUser) {
+            try {
+                const response = await axios.get(`https://lending-api.azurewebsites.net/loans/${loanId}?user_id=${currentUser.id}`)
+                if (response.status === 200) {
+                    setData(response.data);
+                } else {
+                    setError(true)
+                }
+            } catch (e) {
+                setError(true)
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
+
     useEffect(() => {
         setLoading(true);
-        const url = `https://cors-anywhere.herokuapp.com/https://lending-api.azurewebsites.net/loans${loanId}`;
-        axios.get(url, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Credentials': 'true',
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((response) => {
-                setData(response.data);
-                setLoading(false);
-            })
-            .catch((e) => console.log(e))
+        if (loanId && currentUser) {
+            getSchedule().then()
+        }
     }, [loanId])
 
-    if (loading) return <div>Loading... </div>
-
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="loans table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right">Month</TableCell>
-                        <TableCell align="right">Open Balance</TableCell>
-                        <TableCell align="right">Principal Payment</TableCell>
-                        <TableCell align="right">Interest Payment</TableCell>
-                        <TableCell align="right">Close Balance</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((row) => (
-                        <TableRow
-                            key={row.month}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell align="right">{row.month}</TableCell>
-                            <TableCell align="right">{row.open_balance}</TableCell>
-                            <TableCell align="right">{row.principal_payment}</TableCell>
-                            <TableCell align="right">{row.interest_payment}</TableCell>
-                            <TableCell align="right">{row.close_balance}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Dialog open fullWidth maxWidth="sm" onClose={handleClose}>
+            <DialogTitle>Amortization schedule</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    View the schedule for this loan
+                </DialogContentText>
+                {loading ? (<CircularProgress />) :
+                    (
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="loans table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="right">Month</TableCell>
+                                        <TableCell align="right">Open Balance</TableCell>
+                                        <TableCell align="right">Principal Payment</TableCell>
+                                        <TableCell align="right">Interest Payment</TableCell>
+                                        <TableCell align="right">Close Balance</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {data.map((row) => (
+                                        <TableRow
+                                            key={row.month}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="right">{row.month}</TableCell>
+                                            <TableCell align="right">{row.open_balance}</TableCell>
+                                            <TableCell align="right">{row.principal_payment}</TableCell>
+                                            <TableCell align="right">{row.interest_payment}</TableCell>
+                                            <TableCell align="right">{row.close_balance}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )}
+
+            </DialogContent>
+        </Dialog>
     );
 };
