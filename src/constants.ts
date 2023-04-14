@@ -1,0 +1,1 @@
+export const baseUrl = 'https://lending-api.azurewebsites.net';

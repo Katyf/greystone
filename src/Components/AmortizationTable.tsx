@@ -15,6 +15,7 @@ import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {UserContext} from "../Contexts/UserContext";
 import CloseIcon from '@mui/icons-material/Close';
+import {baseUrl} from "../constants";
 
 interface AmortizationTableProps {
     loanId: number
@@ -39,7 +40,7 @@ export const AmortizationTable = (props: AmortizationTableProps) => {
     const getSchedule = async () => {
         if (currentUser) {
             try {
-                const response = await axios.get(`https://lending-api.azurewebsites.net/loans/${loanId}?user_id=${currentUser.id}`)
+                const response = await axios.get(`${baseUrl}/${loanId}?user_id=${currentUser.id}`)
                 if (response.status === 200) {
                     setData(response.data);
                 } else {

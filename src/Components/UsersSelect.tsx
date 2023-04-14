@@ -8,7 +8,8 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    SelectChangeEvent, Snackbar,
+    SelectChangeEvent,
+    Snackbar,
 } from "@mui/material";
 import React, {useContext, useEffect, useState} from "react";
 import {CreateUserDialog} from "./CreateUserDialog";

@@ -37,7 +37,7 @@ export const CreateUserDialog = (props: CreateUserDialogProps) => {
             setInvalid(true)
             return
         }
-        createUser(value, handleClose)
+        await createUser(value, handleClose)
     };
 
 

@@ -1,5 +1,6 @@
 import React, {createContext, Dispatch, FC, SetStateAction, useState} from 'react';
 import axios from "axios";
+import {baseUrl} from "../constants";
 
 
 interface User {
@@ -26,8 +27,6 @@ export const UserContext = createContext<UserContextType>({
     usersError: '',
     setCurrentUser: async() => {}
 });
-
-const baseUrl = 'https://lending-api.azurewebsites.net'
 
 export const UserProvider: FC<{children: React.ReactNode}> = ({ children }) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -57,7 +56,6 @@ export const UserProvider: FC<{children: React.ReactNode}> = ({ children }) => {
             setUsersLoading(false);
         }
     };
-
 
     return (
         <UserContext.Provider value={{ currentUser, users, getUsers, createUser, usersLoading, usersError, setCurrentUser}}>

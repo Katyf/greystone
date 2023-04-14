@@ -1,4 +1,13 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
+import {
+    Alert,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    TextField
+} from "@mui/material";
 import React, {useContext, useState} from "react";
 import {LoanContext} from "../Contexts/LoanContext";
 
@@ -23,7 +32,7 @@ interface CreateLoanDialogProps {
 
 export const CreateLoanDialog = (props: CreateLoanDialogProps) => {
     const {handleClose} = props
-    const {createLoan, loansLoading, loansError} = useContext(LoanContext);
+    const {createLoan, loansLoading: loading, loansError: error} = useContext(LoanContext);
     const [formValue, setFormValue] = useState(initialFormValue)
 
     const isValid = () => {
@@ -61,7 +70,7 @@ export const CreateLoanDialog = (props: CreateLoanDialogProps) => {
                         variant="filled"
                         type="number"
                         margin="normal"
-                        disabled={loansLoading}
+                        disabled={loading}
                         value={formValue.amount.value}
                         error={formValue.amount.error}
                         onChange={handleInputChange}
@@ -74,7 +83,7 @@ export const CreateLoanDialog = (props: CreateLoanDialogProps) => {
                         variant="filled"
                         type="number"
                         margin="normal"
-                        disabled={loansLoading}
+                        disabled={loading}
                         value={formValue.apr.value}
                         error={formValue.apr.error}
                         onChange={handleInputChange}
@@ -87,7 +96,7 @@ export const CreateLoanDialog = (props: CreateLoanDialogProps) => {
                         variant="filled"
                         type="number"
                         margin="normal"
-                        disabled={loansLoading}
+                        disabled={loading}
                         value={formValue.term.value}
                         error={formValue.term.error}
                         onChange={handleInputChange}
@@ -99,6 +108,7 @@ export const CreateLoanDialog = (props: CreateLoanDialogProps) => {
                 <Button onClick={(e) => handleSubmit(e)}>Add loan</Button>
                 <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
+            {error && (<Alert severity="error">Error creating user</Alert>)}
         </Dialog>
     );
 };

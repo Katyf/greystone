@@ -1,6 +1,7 @@
 import React, { createContext, FC, useContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from './UserContext';
+import {baseUrl} from "../constants";
 
 export interface Loan {
     amount: number;
@@ -32,8 +33,6 @@ export const LoanContext = createContext<LoanContextType>({
     loansLoading: true,
     loansError: '',
 });
-
-const baseUrl = 'https://lending-api.azurewebsites.net';
 
 export const LoanProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     const [loans, setLoans] = useState<Loan[]>([]);

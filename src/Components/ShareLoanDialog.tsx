@@ -16,6 +16,7 @@ import React, {useContext, useState} from "react";
 import axios from "axios";
 import {UserContext} from "../Contexts/UserContext";
 import {Loan} from "../Contexts/LoanContext";
+import {baseUrl} from "../constants";
 
 interface ShareLoanDialogProps {
     currentLoan: Loan
@@ -39,7 +40,7 @@ export const ShareLoanDialog = (props: ShareLoanDialogProps) => {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await axios.post(`https://lending-api.azurewebsites.net/loans/${currentLoan.id}/share`,
+            const response = await axios.post(`${baseUrl}/loans/${currentLoan.id}/share`,
                 null, {params: {
                     owner_id: currentLoan.owner_id,
                         user_id: value
