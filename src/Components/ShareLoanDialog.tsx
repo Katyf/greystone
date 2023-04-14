@@ -1,14 +1,17 @@
 import {
+    Alert,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle, FormControl,
-    InputLabel, MenuItem, Select,
-    SelectChangeEvent,
-    TextField
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent
 } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import React, {useContext, useState} from "react";
 import axios from "axios";
 import {UserContext} from "../Contexts/UserContext";
@@ -16,7 +19,7 @@ import {Loan} from "../Contexts/LoanContext";
 
 interface ShareLoanDialogProps {
     currentLoan: Loan
-    handleClose: () => void
+    handleClose: (success?: boolean) => void
 }
 
 export const ShareLoanDialog = (props: ShareLoanDialogProps) => {
@@ -37,13 +40,13 @@ export const ShareLoanDialog = (props: ShareLoanDialogProps) => {
         setLoading(true)
         try {
             const response = await axios.post(`https://lending-api.azurewebsites.net/loans/${currentLoan.id}/share`,
-                {
-                    loan_id: currentLoan.id,
-                    owner_id: currentUser.id,
-                    user_id: value
-                })
+                null, {params: {
+                    owner_id: currentLoan.owner_id,
+                        user_id: value
+                    }})
             if (response.status === 200) {
                 setValue('')
+                handleClose(true)
             } else {
                 setError(true)
             }
@@ -56,29 +59,33 @@ export const ShareLoanDialog = (props: ShareLoanDialogProps) => {
     };
 
     return (
-        <Dialog open onClose={handleClose} maxWidth="sm">
+        <Dialog open onClose={() => handleClose()} maxWidth="sm">
             <DialogTitle>Share loan</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     Choose another user from the list to share this loan with.
                 </DialogContentText>
-                <Select
-                    id="share-select"
-                    value={value}
-                    label="User"
-                    fullWidth
-                    sx={{marginTop: '12px'}}
-                    onChange={(e) => handleChange(e)}
-                >
-                    {users.map((user) => (
-                        user.id !== Number(currentUser.id) ? <MenuItem key={user.id} value={String(user.id)}>{user.username}</MenuItem> : null
-                    ))}
-                </Select>
+
+                <FormControl fullWidth sx={{marginTop: '24px'}}>
+                    <InputLabel id="share-select-label">Recipient</InputLabel>
+                    <Select
+                        labelId="share-select-label"
+                        id="share-select"
+                        value={value}
+                        label="Recipient"
+                        onChange={(e) => handleChange(e)}
+                    >
+                        {users.map((user) => (
+                            user.id !== Number(currentUser.id) ? <MenuItem key={user.id} value={String(user.id)}>{user.username}</MenuItem> : null
+                        ))}
+                    </Select>
+                </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button onClick={(e) => handleSubmit(e)}>Share</Button>
-                <Button onClick={handleClose}>Cancel</Button>
+                <LoadingButton loading={loading} onClick={(e) => handleSubmit(e)}>Share</LoadingButton>
+                <Button onClick={() => handleClose()}>Cancel</Button>
             </DialogActions>
+            {error && (<Alert severity="error">Error sharing loan</Alert>)}
         </Dialog>
     );
 };

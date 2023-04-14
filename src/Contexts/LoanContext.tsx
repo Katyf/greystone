@@ -48,32 +48,29 @@ export const LoanProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
                 setLoans(result.data);
             } catch (err: any) {
                 setLoansError(err);
-                console.log(err)
             } finally {
                 setLoansLoading(false);
             }
         }
     };
 
-    const createLoan = async (loanData: FormData, callback: () => void) => {
+    const createLoan = async (loanData: FormData, callback: (success?: boolean) => void) => {
         if (currentUser) {
             setLoansLoading(true)
             try {
-                const response = await axios.post(`${baseUrl}/loans`, {
+                await axios.post(`${baseUrl}/loans`, {
                     amount: loanData.amount.value,
                     apr: loanData.apr.value,
                     term: loanData.term.value,
                     status: 'active',
                     owner_id: currentUser.id,
                 });
-                callback()
-                return response;
+                callback(true)
+                getLoans().then()
             } catch (err: any) {
                 setLoansLoading(false)
                 setLoansError(err)
                 console.log(err);
-            } finally {
-                getLoans().then()
             }
         }
     };

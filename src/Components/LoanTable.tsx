@@ -1,9 +1,10 @@
 import {
+    Alert,
     Box,
     Button,
     CircularProgress,
     Divider,
-    Paper,
+    Paper, Snackbar,
     Table,
     TableBody,
     TableCell,
@@ -22,9 +23,11 @@ import {AmortizationTable} from "./AmortizationTable";
 
 export const LoanTable = () => {
     const [openNewLoanDialog, setOpenNewLoanDialog] = useState(false)
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [successMessage, setSuccessMessage] = useState('')
     const [currentLoan, setCurrentLoan] = useState<Loan>()
     const [currentAction, setCurrentAction] = useState('')
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, users } = useContext(UserContext);
     const { loans, loansLoading, loansError, getLoans } = useContext(LoanContext);
 
     useEffect(() => {
@@ -37,6 +40,13 @@ export const LoanTable = () => {
         setCurrentLoan(loan)
         setCurrentAction('share')
     }
+    const handleCloseShareDialog = (success?: boolean) => {
+        setCurrentLoan(undefined)
+        if (success) {
+            setSuccessMessage('Loan successfully shared!')
+            setShowSuccess(success)
+        }
+    }
 
     const handleViewAmortization = (loan: Loan) => {
         setCurrentLoan(loan)
@@ -46,12 +56,21 @@ export const LoanTable = () => {
     const handleAddLoanDialog = () => {
         setOpenNewLoanDialog(true)
     }
-    const handleCloseAddLoanDialog = () => {
+    const handleCloseAddLoanDialog = (success?: boolean) => {
         setOpenNewLoanDialog(false)
+        if (success) {
+            setSuccessMessage('Loan successfully created!')
+            setShowSuccess(success)
+        }
+    }
+
+    const getOwnerName = (userId: number) => {
+        const owner = users.find((user) => user.id === userId)
+        return owner ? owner.username : userId
     }
 
     if (!currentUser) {
-        return <Typography>Select a user from the dropdown list to view their loans</Typography>
+        return <Typography align="center">Select a user from the dropdown list to view their loans</Typography>
     }
     if (loansLoading) return <CircularProgress />
     if (loansError) return <div>There was an error :/ </div>
@@ -78,11 +97,11 @@ export const LoanTable = () => {
                                 key={row.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
-                                <TableCell align="center">{row.id} {row.amount}</TableCell>
-                                <TableCell align="center">{row.apr}</TableCell>
+                                <TableCell align="center">${row.amount}</TableCell>
+                                <TableCell align="center">{row.apr}%</TableCell>
                                 <TableCell align="center">{row.term}</TableCell>
                                 <TableCell align="center">{row.status}</TableCell>
-                                <TableCell align="center">{row.owner_id}</TableCell>
+                                <TableCell align="center">{getOwnerName(row.owner_id)}</TableCell>
                                 <TableCell align="right" sx={{width: '30px'}}>
                                     <LoanMenu
                                         handleShare={ () => handleShare(row)}
@@ -102,7 +121,7 @@ export const LoanTable = () => {
             {currentLoan && currentAction === 'share' && (
                 <ShareLoanDialog
                     currentLoan={currentLoan}
-                    handleClose={() => setCurrentLoan(undefined)}
+                    handleClose={handleCloseShareDialog}
                 />
             )}
             {currentLoan && currentAction === 'view' && (
@@ -116,6 +135,14 @@ export const LoanTable = () => {
                 {openNewLoanDialog && (
                     <CreateLoanDialog handleClose={handleCloseAddLoanDialog} />
                 )}
+                {showSuccess && (
+                    <Snackbar open autoHideDuration={6000} onClose={() => setShowSuccess(false)}>
+                        <Alert severity="success" sx={{ width: '100%' }}>
+                            {successMessage}
+                        </Alert>
+                    </Snackbar>
+                )}
+
             </Box>
     );
 };

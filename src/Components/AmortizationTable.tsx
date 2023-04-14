@@ -2,7 +2,7 @@ import {
     CircularProgress,
     Dialog,
     DialogContent, DialogContentText,
-    DialogTitle,
+    DialogTitle, IconButton,
     Paper,
     Table,
     TableBody,
@@ -14,6 +14,7 @@ import {
 import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {UserContext} from "../Contexts/UserContext";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AmortizationTableProps {
     loanId: number
@@ -31,7 +32,7 @@ interface LoanSchedule {
 export const AmortizationTable = (props: AmortizationTableProps) => {
     const {loanId, handleClose} = props;
     const {currentUser} = useContext(UserContext)
-    const [error, setError] = useState(true)
+    const [error, setError] = useState(false)
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<LoanSchedule[]>([])
 
@@ -60,10 +61,24 @@ export const AmortizationTable = (props: AmortizationTableProps) => {
     }, [loanId])
 
     return (
-        <Dialog open fullWidth maxWidth="sm" onClose={handleClose}>
-            <DialogTitle>Amortization schedule</DialogTitle>
+        <Dialog open fullWidth maxWidth="lg" onClose={handleClose}>
+            <DialogTitle>
+                Amortization schedule
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: '#2b2b2b',
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            </DialogTitle>
             <DialogContent>
-                <DialogContentText>
+                <DialogContentText sx={{ marginBottom: '24px' }}>
                     View the schedule for this loan
                 </DialogContentText>
                 {loading ? (<CircularProgress />) :
@@ -86,17 +101,17 @@ export const AmortizationTable = (props: AmortizationTableProps) => {
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell align="right">{row.month}</TableCell>
-                                            <TableCell align="right">{row.open_balance}</TableCell>
-                                            <TableCell align="right">{row.principal_payment}</TableCell>
-                                            <TableCell align="right">{row.interest_payment}</TableCell>
-                                            <TableCell align="right">{row.close_balance}</TableCell>
+                                            <TableCell align="right">${row.open_balance.toFixed(2)}</TableCell>
+                                            <TableCell align="right">${row.principal_payment.toFixed(2)}</TableCell>
+                                            <TableCell align="right">${row.interest_payment.toFixed(2)}</TableCell>
+                                            <TableCell align="right">${row.close_balance.toFixed(2)}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>
                     )}
-
+                {!data && !loading && error && (<>There was an error fetching the amortization schedule for this loan.</>)}
             </DialogContent>
         </Dialog>
     );

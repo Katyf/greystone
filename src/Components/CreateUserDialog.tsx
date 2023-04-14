@@ -1,4 +1,5 @@
 import {
+    Alert,
     Button,
     Dialog,
     DialogActions,
@@ -8,35 +9,40 @@ import {
     FormControl, InputLabel,
     TextField
 } from "@mui/material";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import axios from "axios";
+import {LoanContext} from "../Contexts/LoanContext";
+import {UserContext} from "../Contexts/UserContext";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 interface CreateUserDialogProps {
-    handleClose: () => void
-    setRefreshData: (shouldRefresh: boolean) => void
+    handleClose: (success?: boolean) => void
 }
 
 export const CreateUserDialog = (props: CreateUserDialogProps) => {
-    const {handleClose, setRefreshData} = props
+    const {handleClose} = props
     const [value, setValue] = useState('')
-    const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const {createUser, usersLoading: loading, usersError: error} = useContext(UserContext);
+    const [invalid, setInvalid] = useState(false)
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const newVal = e.target.value
+        newVal === '' ? setInvalid(true) : setInvalid(false)
+        setValue(newVal)
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLDivElement> | React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        setLoading(true)
-        const response = await axios.post('https://lending-api.azurewebsites.net/users', {username: value})
-        if (response.status === 200) {
-            setValue('')
-            setRefreshData(true)
-        } else {
-            setError(true)
+        if (value === '') {
+            setInvalid(true)
+            return
         }
+        createUser(value, handleClose)
     };
 
 
     return (
-        <Dialog open fullWidth maxWidth="sm" onClose={handleClose}>
+        <Dialog open fullWidth maxWidth="sm" onClose={() => handleClose()}>
             <DialogTitle>Create user</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -50,15 +56,16 @@ export const CreateUserDialog = (props: CreateUserDialogProps) => {
                         margin="normal"
                         disabled={loading}
                         value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        error={error}
+                        onChange={(e) => handleChange(e)}
+                        error={invalid}
                     />
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button onClick={(e) => handleSubmit(e)}>Create</Button>
-                <Button onClick={handleClose}>Cancel</Button>
+                <LoadingButton loading={loading} onClick={(e) => handleSubmit(e)}>Create</LoadingButton>
+                <Button onClick={() => handleClose()}>Cancel</Button>
             </DialogActions>
+            {error && (<Alert severity="error">Error creating user</Alert>)}
         </Dialog>
     );
 }

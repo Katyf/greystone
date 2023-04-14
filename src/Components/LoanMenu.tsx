@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {IconButton, Tooltip} from "@mui/material";
+import {IconButton, ListItemIcon, Tooltip} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {Loan} from "../Contexts/LoanContext";
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import ShareIcon from '@mui/icons-material/Share';
 
 interface LoanMenuProps {
     handleShare: any
@@ -22,7 +23,7 @@ export const LoanMenu = (props: LoanMenuProps) => {
 
     return (
         <div>
-            <Tooltip title="Share">
+            <Tooltip title="Options">
             <IconButton
                 onClick={handleClick}
                 id="options-menu-button"
@@ -42,8 +43,18 @@ export const LoanMenu = (props: LoanMenuProps) => {
                     'aria-labelledby': 'options-menu-button',
                 }}
             >
-                <MenuItem onClick={handleShare}>Share</MenuItem>
-                <MenuItem onClick={handleViewAmortization}>View Amortization</MenuItem>
+                <MenuItem onClick={handleShare}>
+                    <ListItemIcon>
+                        <ShareIcon/>
+                    </ListItemIcon>
+                    Share
+                </MenuItem>
+                <MenuItem onClick={handleViewAmortization}>
+                    <ListItemIcon>
+                        <ScheduleIcon/>
+                    </ListItemIcon>
+                    View Amortization
+                </MenuItem>
             </Menu>
         </div>
     );

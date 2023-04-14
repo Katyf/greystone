@@ -11,7 +11,7 @@ interface UserContextType {
     currentUser: User | null;
     users: User[];
     getUsers: () => Promise<void>;
-    createUser: (username: string) => Promise<void>;
+    createUser: (username: string, handleClose: (success?: boolean) => void) => Promise<void>;
     usersLoading: boolean
     usersError: string
     setCurrentUser: Dispatch<SetStateAction<User | null>>;
@@ -46,10 +46,11 @@ export const UserProvider: FC<{children: React.ReactNode}> = ({ children }) => {
         }
     };
 
-    const createUser = async (username: string) => {
+    const createUser = async (username: string, callBack: (success?:boolean) => void) => {
         try {
-            const result = await axios.post(`${baseUrl}/users`, {username: username})
-            setUsers(result.data);
+            await axios.post(`${baseUrl}/users`, {username: username})
+            callBack(true)
+            getUsers().then()
         } catch(error: any) {
             setUsersError(error);
         } finally {
