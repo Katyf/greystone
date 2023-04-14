@@ -11,24 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="419788ab-1973-4142-a548-5b3dc9a28c58" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/babel.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Components/UsersSelect.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Contexts/LoanContext.test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/AmortizationTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/AmortizationTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/CreateUserDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/CreateUserDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/LoanMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/LoanMenu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/LoanTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/LoanTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/ShareLoanDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/ShareLoanDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contexts/LoanContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contexts/LoanContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contexts/UserContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contexts/UserContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logo.svg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +58,7 @@
       <option name="presentableId" value="Default" />
       <updated>1681240707111</updated>
       <workItem from="1681240709253" duration="4442000" />
-      <workItem from="1681328746813" duration="39047000" />
+      <workItem from="1681328746813" duration="39281000" />
     </task>
     <servers />
   </component>
