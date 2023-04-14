@@ -11,18 +11,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="419788ab-1973-4142-a548-5b3dc9a28c58" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/AmortizationTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/AmortizationTable.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/CreateLoanDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/CreateLoanDialog.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/CreateUserDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/CreateUserDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/LoanMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/LoanMenu.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/LoanTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/LoanTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Main.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/ShareLoanDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/ShareLoanDialog.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/UsersSelect.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/UsersSelect.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Contexts/LoanContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contexts/LoanContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contexts/UserContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contexts/UserContext.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +47,8 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="run.prettier.on.save" value="true" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript.Linters.JSLint" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
@@ -69,7 +71,7 @@
       <option name="presentableId" value="Default" />
       <updated>1681240707111</updated>
       <workItem from="1681240709253" duration="4442000" />
-      <workItem from="1681328746813" duration="39693000" />
+      <workItem from="1681328746813" duration="40801000" />
     </task>
     <servers />
   </component>
@@ -89,6 +91,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2197" y="36" key="SettingsEditor" timestamp="1681509328767">
+      <screen x="1680" y="-77" width="1920" height="1055" />
+    </state>
+    <state x="2197" y="36" key="SettingsEditor/0.25.1680.955/1680.-77.1920.1055@1680.-77.1920.1055" timestamp="1681509328767" />
     <state x="2387" y="33" width="602" height="735" key="find.popup" timestamp="1681505663678">
       <screen x="1680" y="-77" width="1920" height="1055" />
     </state>
